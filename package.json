@@ -1,0 +1,21 @@
+﻿{
+  "name": "ai-meeting-intelligence",
+  "version": "1.0.0",
+  "description": "Transform meetings into structured organizational intelligence graphs and execution engines",
+  "main": "server/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js"
+  },
+  "keywords": [
+    "ai",
+    "meeting-intelligence",
+    "decision-graph",
+    "knowledge-graph",
+    "task-dag",
+    "risk-analysis"
+  ],
+  "author": "Vijay Mahes <Vijaypradhap2004@gmail.com>",
+  "license": "MIT"
+}
