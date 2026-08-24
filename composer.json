@@ -1,0 +1,16 @@
+﻿{
+    "name": "vijaymahes9080/ai-meeting-intelligence",
+    "description": "AI Meeting Intelligence - Smart meeting assistant powered by AI",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Vijay Mahes",
+            "email": "Vijaypradhap2004@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {},
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
