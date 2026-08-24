@@ -11,6 +11,10 @@
 
 > **“Don’t just record what people said. Understand what the organization decided, what must happen next, why it matters, and what could go wrong.”**
 
+<br>
+
+<img src="docs/images/dashboard-light.png" alt="AI Meeting Intelligence Dashboard Light Theme" width="100%" style="border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.08);" />
+
 </div>
 
 ---
@@ -19,33 +23,9 @@
 
 **AI Meeting Intelligence** is not another passive audio recorder or basic transcription tool. It transforms conversations into a **structured, continuous organizational intelligence system** that links decisions, task dependency DAGs, cross-meeting fact contradictions, and downstream execution automations.
 
-```
-[ Conversation / Meeting Transcripts ]
-                   │
-                   ▼
-       [ Multi-Agent LLM Router ]
-                   │
-    ┌──────────────┼──────────────┐
-    ▼              ▼              ▼
-[ Decision ]   [ Task DAG ]   [ Knowledge ]
-[  Graph   ]   [  Engine  ]   [  Graph    ]
-    │              │              │
-    └──────────────┼──────────────┘
-                   ▼
-    [ Continuous Meeting Memory ]
-                   │
-    ┌──────────────┴──────────────┐
-    ▼                             ▼
-[ Contradiction Engine ]    [ Risk Radar ]
-    │                             │
-    └──────────────┬──────────────┘
-                   ▼
-      [ "Why Did We Decide This?" ]
-                   │
-                   ▼
-   [ Action Integrations Pipeline ]
-   (Slack, Jira, GitHub, Google Calendar)
-```
+<div align="center">
+  <img src="docs/images/architecture-light.png" alt="Meeting-to-Execution Pipeline" width="90%" style="border-radius: 12px; margin: 16px 0;" />
+</div>
 
 ---
 
@@ -77,6 +57,14 @@ Users can query the organizational memory in plain English:
 * **Related Risks:** Database migration & sharding complexity
 * **Follow-up Tasks:** Draft schema specification (Sarah), Dockerize cluster (Arun)
 * **Citation:** *"Sarah: 'We evaluated MongoDB, MySQL, and PostgreSQL. PostgreSQL is our recommended choice because Project V2 demands strict ACID transaction compliance...'"*
+
+---
+
+## 📱 Social & Community Preview
+
+<div align="center">
+  <img src="docs/images/linkedin-post.png" alt="AI Meeting Intelligence Social Banner" width="90%" style="border-radius: 12px; margin: 12px 0;" />
+</div>
 
 ---
 
@@ -116,7 +104,10 @@ Users can query the organizational memory in plain English:
 │   └── test_graphs.py              # Automated unit & integration tests
 ├── docs/
 │   ├── ARCHITECTURE.md             # System architecture blueprint
-│   └── API.md                      # REST API reference specifications
+│   ├── API.md                      # REST API reference specifications
+│   └── images/                     # Light theme mockups & banners
+├── linkedin.md                     # Ready-to-publish LinkedIn announcement
+├── image.png                       # High-res LinkedIn post preview
 ├── Dockerfile & docker-compose.yml # Containerized deployment configs
 └── .github/workflows/ci.yml        # Automated CI test pipeline
 ```

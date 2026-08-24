@@ -1,0 +1,302 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 50%, #F1F5F9 100%);
+      color: #0F172A;
+      width: 1400px;
+      height: 820px;
+      padding: 32px 40px;
+      overflow: hidden;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #E2E8F0;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #4F46E5, #06B6D4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+    }
+    .brand h1 { font-size: 24px; font-weight: 800; color: #0F172A; letter-spacing: -0.5px; }
+    .brand p { font-size: 13px; color: #64748B; font-weight: 500; }
+    .badges { display: flex; gap: 10px; }
+    .badge {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981; }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 24px;
+      height: calc(100% - 90px);
+    }
+    .card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0F172A;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .tag-blue { background: #EFF6FF; color: #2563EB; }
+    .tag-green { background: #ECFDF5; color: #059669; }
+    .tag-amber { background: #FFFBEB; color: #D97706; }
+    .tag-rose { background: #FFF1F2; color: #E11D48; }
+    .tag-purple { background: #FAF5FF; color: #7C3AED; }
+
+    .timeline-item {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+    .timeline-item.active {
+      background: #EFF6FF;
+      border-color: #93C5FD;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+    }
+    .timeline-date { font-size: 11px; color: #64748B; font-weight: 600; }
+    .timeline-title { font-size: 13px; font-weight: 700; color: #0F172A; margin: 4px 0 6px 0; }
+
+    .main-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .why-box {
+      background: linear-gradient(135deg, #FFFFFF, #F8FAFC);
+      border: 2px solid #38BDF8;
+      border-radius: 16px;
+      padding: 18px 22px;
+      box-shadow: 0 8px 24px rgba(6, 182, 212, 0.1);
+    }
+    .why-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .why-title { font-size: 15px; font-weight: 800; color: #0284C7; }
+    .why-q {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0F172A;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      padding: 10px 16px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .why-ans {
+      background: #F0FDF4;
+      border-left: 4px solid #10B981;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #166534;
+      line-height: 1.5;
+    }
+
+    .intel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      flex: 1;
+    }
+    .intel-column {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .intel-col-title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .item-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .item-card h4 { font-size: 13px; font-weight: 700; color: #0F172A; margin-bottom: 4px; }
+    .item-card p { font-size: 11px; color: #64748B; line-height: 1.4; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="brand">
+      <div class="brand-icon">🧠</div>
+      <div>
+        <h1>AI Meeting Intelligence</h1>
+        <p>Organizational Intelligence System • Decision & Task Execution Brain</p>
+      </div>
+    </div>
+    <div class="badges">
+      <div class="badge"><div class="dot"></div> 4 Connected Meetings</div>
+      <div class="badge" style="color: #2563EB;">🌐 Decision Traceability: 100%</div>
+      <div class="badge" style="color: #059669;">⚡ Active Sync: Jira & Slack</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- Left Sidebar -->
+    <div class="card">
+      <div class="card-title">
+        <span>Continuous Memory</span>
+        <span class="tag tag-blue">Cross-Meeting</span>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">2026-07-18 • Architecture Review</div>
+        <div class="timeline-title">PostgreSQL Database Selection</div>
+        <span class="tag tag-green">Decision Approved</span>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">2026-08-10 • Sprint Planning</div>
+        <div class="timeline-title">V2 Launch Target: Aug 28</div>
+        <span class="tag tag-blue">3 Tasks Created</span>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">2026-08-20 • Mid-Sprint Sync</div>
+        <div class="timeline-title">Webhook Rate Limit Delay</div>
+        <span class="tag tag-rose">Conflict Detected</span>
+      </div>
+
+      <div class="timeline-item active">
+        <div class="timeline-date">2026-08-23 • Emergency Alignment</div>
+        <div class="timeline-title">Pair Sarah + Arun (Unblocked)</div>
+        <span class="tag tag-purple">Mitigation Locked</span>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-panel">
+      <!-- Why Did We Decide This? -->
+      <div class="why-box">
+        <div class="why-header">
+          <span style="font-size: 18px;">🔥</span>
+          <span class="why-title">“Why Did We Decide This?” Query Engine</span>
+          <span class="tag tag-purple">Knowledge Graph Trace</span>
+        </div>
+        <div class="why-q">
+          <span>“Why did we choose PostgreSQL for Project V2 instead of MongoDB?”</span>
+          <span class="tag tag-blue">Trace Rationale ➔</span>
+        </div>
+        <div class="why-ans">
+          <strong>Decision Approved:</strong> PostgreSQL chosen in <em>Architecture Review (July 18)</em> by Sarah & Elena due to strict ACID multi-tenant billing requirements and 5+ years team operational depth. Alternatives evaluated: MongoDB, MySQL. Downstream: Citus extension planned for Phase 3 scaling.
+        </div>
+      </div>
+
+      <!-- 3 Columns -->
+      <div class="intel-grid">
+        <div class="intel-column" style="border-top: 3px solid #10B981;">
+          <div class="intel-col-title" style="color: #059669;">
+            <span>🌐</span> Decision Graph
+          </div>
+          <div class="item-card">
+            <h4>Adopt PostgreSQL for V2</h4>
+            <p><strong>Rationale:</strong> ACID transactions for multi-tenant billing engine.</p>
+          </div>
+          <div class="item-card">
+            <h4>Pair Sarah with Arun</h4>
+            <p><strong>Rationale:</strong> Unblock Redis rate limit queue for Wednesday 2 PM handover.</p>
+          </div>
+        </div>
+
+        <div class="intel-column" style="border-top: 3px solid #06B6D4;">
+          <div class="intel-col-title" style="color: #0284C7;">
+            <span>📊</span> Task DAG & Critical Path
+          </div>
+          <div class="item-card">
+            <h4>Complete API Integration</h4>
+            <p>Owner: <strong>@Arun</strong> • Due: Aug 26 • <span class="tag tag-amber">Critical Path</span></p>
+          </div>
+          <div class="item-card">
+            <h4>48h End-to-End QA</h4>
+            <p>Owner: <strong>@Dev</strong> • Due: Aug 28 • <span class="tag tag-blue">Depends on API</span></p>
+          </div>
+        </div>
+
+        <div class="intel-column" style="border-top: 3px solid #F43F5E;">
+          <div class="intel-col-title" style="color: #E11D48;">
+            <span>🚨</span> Risk & Contradictions
+          </div>
+          <div class="item-card">
+            <h4>Schedule Rumor Conflict</h4>
+            <p>Aug 21 rumor retracted; Aug 28 confirmed official launch.</p>
+          </div>
+          <div class="item-card">
+            <h4>QA Starvation Threat</h4>
+            <p><span class="tag tag-green">Resolved</span> Pairing unblocked Wednesday delivery.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
