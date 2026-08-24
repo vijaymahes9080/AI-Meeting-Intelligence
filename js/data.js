@@ -1,0 +1,270 @@
+window.SEED_DATA = {
+  "organization": {
+    "name": "Acme Cloud Technologies",
+    "project": "Project V2 - NextGen Intelligence Platform",
+    "team": ["Arun (Senior Backend Lead)", "Sarah (Lead Architect)", "Elena (Product Director)", "Dev (QA Lead)", "Marcus (DevOps / Infra)"]
+  },
+  "meetings": [
+    {
+      "id": "meet-001",
+      "title": "Architecture & Database Selection Review",
+      "date": "2026-07-18",
+      "time": "10:00 AM - 11:30 AM",
+      "attendees": ["Sarah", "Arun", "Elena", "Marcus"],
+      "transcript": "Elena: Welcome everyone. We need to finalize the data persistence layer for Project V2. Sarah, what are the architecture findings?\nSarah: We evaluated MongoDB, MySQL, and PostgreSQL. PostgreSQL is our recommended choice because Project V2 demands strict ACID transaction compliance for our multi-tenant billing engine, plus the core engineering team already has 5+ years of deep operational expertise with it.\nArun: I agree. PostgreSQL jsonb indexing gives us the document-model flexibility without sacrificing relational integrity.\nMarcus: Migration and schema sharding at scale will be complex, but we can manage that with Timescale/Citus if required.\nElena: Perfect. Decision approved: We will use PostgreSQL for Project V2. Sarah, please draft the schema specification by July 25. Arun, start the local database containerization.",
+      "summary": "Finalized PostgreSQL as the primary database for Project V2 based on ACID transaction needs and team expertise over MongoDB and MySQL.",
+      "decisions": [
+        {
+          "id": "dec-001",
+          "title": "Adopt PostgreSQL as Primary Database for Project V2",
+          "chosenOption": "PostgreSQL",
+          "alternatives": ["MongoDB", "MySQL"],
+          "rationale": "Strict ACID transaction requirements for multi-tenant billing + existing engineering team expertise and JSONB support.",
+          "decisionMaker": "Architecture Review Board (Sarah, Elena)",
+          "stakeholders": ["Backend Team", "DevOps Team", "Data Team"],
+          "meetingId": "meet-001",
+          "status": "APPROVED",
+          "consequences": [
+            "Requires automated schema migration pipeline",
+            "High write-throughput sharding will need Citus/Timescale in Phase 3"
+          ]
+        }
+      ],
+      "tasks": [
+        {
+          "id": "task-001",
+          "title": "Draft PostgreSQL Schema Specification",
+          "owner": "Sarah",
+          "deadline": "2026-07-25",
+          "status": "COMPLETED",
+          "dependsOn": [],
+          "priority": "HIGH",
+          "meetingId": "meet-001"
+        },
+        {
+          "id": "task-002",
+          "title": "Setup PostgreSQL Dockerized Local & Staging Clusters",
+          "owner": "Arun",
+          "deadline": "2026-07-28",
+          "status": "COMPLETED",
+          "dependsOn": ["task-001"],
+          "priority": "MEDIUM",
+          "meetingId": "meet-001"
+        }
+      ],
+      "risks": [
+        {
+          "id": "risk-001",
+          "title": "Database Migration & Sharding Complexity",
+          "severity": "MEDIUM",
+          "impactChain": "Data Growth -> Sharding Overhead -> Latency Spikes",
+          "mitigation": "Setup connection pooling (PgBouncer) and evaluate Citus extension early.",
+          "meetingId": "meet-001"
+        }
+      ]
+    },
+    {
+      "id": "meet-002",
+      "title": "V2 Sprint Planning & Launch Milestones",
+      "date": "2026-08-10",
+      "time": "02:00 PM - 03:00 PM",
+      "attendees": ["Elena", "Arun", "Dev", "Sarah"],
+      "transcript": "Elena: Let's establish our official release target for Project V2. We are aiming for Friday, August 28th for general availability.\nArun: For the backend, I will finish the core API Integration endpoints by Wednesday, August 26th.\nDev: The testing and QA team requires at least two full business days after API completion to execute regression tests and load benchmarks before greenlighting production.\nElena: Understood. Arun commits to Wednesday Aug 26, Dev gets Thursday & Friday for QA, and we launch Friday August 28th at 5 PM. Let's make this our locked milestone.",
+      "summary": "Set target production launch date for Project V2 on Friday, August 28th. Arun to complete API integration by Wednesday Aug 26; Dev (QA) allocated 2 days for verification.",
+      "decisions": [
+        {
+          "id": "dec-002",
+          "title": "Project V2 Launch Milestone Scheduled for August 28",
+          "chosenOption": "Launch on Friday, August 28",
+          "alternatives": ["Launch on September 10", "Staggered Beta Launch"],
+          "rationale": "Aligns with customer renewals cycle and executive Q3 board demonstration.",
+          "decisionMaker": "Elena (Product Director)",
+          "stakeholders": ["Executive Team", "Product Team", "QA", "Customers"],
+          "meetingId": "meet-002",
+          "status": "APPROVED",
+          "consequences": [
+            "Zero buffer between QA signoff and production deployment",
+            "Any API slip blocks the Friday release"
+          ]
+        }
+      ],
+      "tasks": [
+        {
+          "id": "task-003",
+          "title": "Complete Core API Integration Endpoints",
+          "owner": "Arun",
+          "deadline": "2026-08-26",
+          "status": "IN_PROGRESS",
+          "dependsOn": ["task-002"],
+          "priority": "CRITICAL",
+          "meetingId": "meet-002"
+        },
+        {
+          "id": "task-004",
+          "title": "Execute End-to-End QA & Load Testing",
+          "owner": "Dev",
+          "deadline": "2026-08-28",
+          "status": "BLOCKED",
+          "dependsOn": ["task-003"],
+          "priority": "HIGH",
+          "meetingId": "meet-002"
+        },
+        {
+          "id": "task-005",
+          "title": "Execute Production Release & DNS Cutover",
+          "owner": "Marcus",
+          "deadline": "2026-08-28",
+          "status": "PENDING",
+          "dependsOn": ["task-004"],
+          "priority": "CRITICAL",
+          "meetingId": "meet-002"
+        }
+      ],
+      "risks": [
+        {
+          "id": "risk-002",
+          "title": "Tight Cascade Dependency Risk (API -> QA -> Launch)",
+          "severity": "HIGH",
+          "impactChain": "Arun API Delay -> QA Bottleneck -> Production Launch Slip",
+          "mitigation": "Mock API contracts for QA so test cases can be automated in parallel.",
+          "meetingId": "meet-002"
+        }
+      ]
+    },
+    {
+      "id": "meet-003",
+      "title": "Mid-Sprint Sync & Status Check",
+      "date": "2026-08-20",
+      "time": "11:00 AM - 11:45 AM",
+      "attendees": ["Elena", "Arun", "Dev", "Marcus"],
+      "transcript": "Elena: Let's do a quick sync. Arun, how is API integration progressing? In the marketing briefing, someone mentioned we are launching on August 21?\nArun: That was a misunderstanding from marketing; our target is next week. Also, we encountered third-party webhook rate limits which might push API completion from Wednesday to Thursday.\nDev: If the API is handed over on Thursday instead of Wednesday, QA cannot complete full security regression by Friday morning!\nMarcus: Also we need the staging SSL certificates renewed before testing can connect to auth servers.",
+      "summary": "Detected timeline confusion regarding launch dates. Arun flagged potential 1-day delay on API integration due to webhook rate limits, triggering a critical QA blocker warning.",
+      "decisions": [
+        {
+          "id": "dec-003",
+          "title": "Reject Expedited Aug 21 Launch (Enforce Aug 28 Target)",
+          "chosenOption": "Maintain August 28 launch date",
+          "alternatives": ["Rushed release on Aug 21 without QA", "Defer to September 4"],
+          "rationale": "Releasing without full security audit introduces catastrophic data leakage risk.",
+          "decisionMaker": "Elena & Dev",
+          "stakeholders": ["Marketing", "Security", "Engineering"],
+          "meetingId": "meet-003",
+          "status": "APPROVED",
+          "consequences": ["Marketing team must retract external newsletter"]
+        }
+      ],
+      "tasks": [
+        {
+          "id": "task-006",
+          "title": "Implement Redis Webhook Rate-Limit Queue",
+          "owner": "Arun",
+          "deadline": "2026-08-22",
+          "status": "IN_PROGRESS",
+          "dependsOn": [],
+          "priority": "HIGH",
+          "meetingId": "meet-003"
+        },
+        {
+          "id": "task-007",
+          "title": "Renew Staging SSL Certificates",
+          "owner": "Marcus",
+          "deadline": "2026-08-21",
+          "status": "COMPLETED",
+          "dependsOn": [],
+          "priority": "MEDIUM",
+          "meetingId": "meet-003"
+        }
+      ],
+      "risks": [
+        {
+          "id": "risk-003",
+          "title": "API Handover Slip Causing QA Starvation",
+          "severity": "CRITICAL",
+          "impactChain": "Webhook Throttling -> Thursday API Drop -> 24h QA Deficit -> Launch Weekend Failure",
+          "mitigation": "Assign Sarah to assist Arun on rate limit queue so API finishes on Wednesday.",
+          "meetingId": "meet-003"
+        }
+      ]
+    },
+    {
+      "id": "meet-004",
+      "title": "Emergency Readiness & Mitigation Alignment",
+      "date": "2026-08-23",
+      "time": "04:00 PM - 04:50 PM",
+      "attendees": ["Elena", "Arun", "Sarah", "Dev", "Marcus"],
+      "transcript": "Elena: We called this emergency alignment to resolve the critical path blocker. Sarah has paired with Arun to resolve the webhook queue.\nSarah: The Redis rate-limit queue is built and tested. Arun is now back on track to deliver the finalized API endpoints by Wednesday 2 PM.\nDev: Excellent. If we get the build by Wednesday 2 PM, QA will run smoke tests overnight and complete full regression by Friday 12 PM.\nMarcus: Automated blue-green deployment pipelines are pre-warmed. We are go for launch on Friday August 28 at 5:00 PM UTC.\nElena: Perfect. Follow-up actions: Automate status notification to executive stakeholders upon Wednesday QA handover.",
+      "summary": "Risk mitigated. Sarah and Arun paired to unblock rate-limiting. Wednesday 2 PM delivery reaffirmed, allowing QA to finish testing on schedule for Friday launch.",
+      "decisions": [
+        {
+          "id": "dec-004",
+          "title": "Pair Sarah with Arun for Critical Path Unblocking",
+          "chosenOption": "Pair Architecture Lead directly on API Queue",
+          "alternatives": ["Postpone Launch by 1 Week", "Drop Webhook Feature from V2"],
+          "rationale": "Preserves the August 28 deadline while maintaining full feature completeness and QA duration.",
+          "decisionMaker": "Elena (Product Director)",
+          "stakeholders": ["Engineering Team", "QA Team", "Product"],
+          "meetingId": "meet-004",
+          "status": "APPROVED",
+          "consequences": ["Sarah's Phase 3 design work paused for 2 days"]
+        }
+      ],
+      "tasks": [
+        {
+          "id": "task-008",
+          "title": "Execute Wednesday 2 PM Build Delivery to QA",
+          "owner": "Arun",
+          "deadline": "2026-08-26 14:00",
+          "status": "PENDING",
+          "dependsOn": ["task-003", "task-006"],
+          "priority": "CRITICAL",
+          "meetingId": "meet-004"
+        },
+        {
+          "id": "task-009",
+          "title": "Send Executive Status Check at Wednesday Handover",
+          "owner": "Elena",
+          "deadline": "2026-08-26 17:00",
+          "status": "SCHEDULED",
+          "dependsOn": ["task-008"],
+          "priority": "MEDIUM",
+          "meetingId": "meet-004"
+        }
+      ],
+      "risks": [
+        {
+          "id": "risk-004",
+          "title": "Residual Flakiness in Third-Party Webhook Provider",
+          "severity": "LOW",
+          "impactChain": "Provider Downtime -> Retry Backoff -> Minor User Webhook Delay",
+          "mitigation": "Dead letter queue and automatic circuit breaker configured.",
+          "meetingId": "meet-004"
+        }
+      ]
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "contra-001",
+      "type": "SCHEDULE_CONFLICT",
+      "title": "Launch Target Discrepancy (Aug 28 vs Aug 21)",
+      "severity": "HIGH",
+      "statementA": "Meeting 2 (Aug 10): 'Target general availability is Friday, August 28th.'",
+      "statementB": "Meeting 3 (Aug 20): 'Marketing briefing mentioned launching on August 21.'",
+      "resolution": "Marketing rumor was retracted in Meeting 3; August 28 confirmed as official release.",
+      "status": "RESOLVED",
+      "meetings": ["meet-002", "meet-003"]
+    },
+    {
+      "id": "contra-002",
+      "type": "DEPENDENCY_BOTTLENECK",
+      "title": "API Handover Timeline vs QA 48-Hour Requirement",
+      "severity": "CRITICAL",
+      "statementA": "Meeting 2 (Aug 10): 'Arun commits to Wednesday Aug 26; Dev needs 2 full days before Friday launch.'",
+      "statementB": "Meeting 3 (Aug 20): 'Arun flags rate limit delays pushing API delivery to Thursday.'",
+      "resolution": "Resolved in Meeting 4 via pairing Sarah with Arun, locking handover at Wednesday 2 PM.",
+      "status": "RESOLVED",
+      "meetings": ["meet-002", "meet-003", "meet-004"]
+    }
+  ]
+}
+;

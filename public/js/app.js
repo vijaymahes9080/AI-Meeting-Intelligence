@@ -1,40 +1,26 @@
 ﻿/**
  * AI Meeting Intelligence - Frontend Application Controller
- * Handles REST API sync with automatic relative path fallback for GitHub Pages.
+ * Works instantly on file:///, http://, GitHub Pages, and REST API mode.
  */
 
-let state = null;
+let state = window.SEED_DATA || null;
 let activeMeetingIndex = 0;
 let visualizerInstance = null;
 
 async function fetchState() {
-  try {
-    const res = await fetch('/api/state');
-    if (res.ok) {
-      state = await res.json();
-      renderAll();
-      return;
-    }
-  } catch (err) {}
-
-  // Fallback for static hosting / GitHub Pages
-  try {
-    const fallbackRes = await fetch('data/seedData.json');
-    if (fallbackRes.ok) {
-      state = await fallbackRes.json();
-      renderAll();
-      return;
-    }
-  } catch (e) {}
-
-  try {
-    const relRes = await fetch('../data/seedData.json');
-    if (relRes.ok) {
-      state = await relRes.json();
-      renderAll();
-      return;
-    }
-  } catch (e) {}
+  if (window.location.protocol.startsWith('http')) {
+    try {
+      const res = await fetch('/api/state');
+      if (res.ok) {
+        state = await res.json();
+      }
+    } catch (err) {}
+  }
+  
+  if (!state && window.SEED_DATA) {
+    state = window.SEED_DATA;
+  }
+  renderAll();
 }
 
 function renderAll() {
@@ -50,12 +36,13 @@ function renderAll() {
 }
 
 function renderHeaderMetrics() {
-  const totalMeetings = state.meetings ? state.meetings.length : 4;
+  if (!state || !state.meetings) return;
+  const totalMeetings = state.meetings.length;
   let totalDecisions = 0;
   let totalTasks = 0;
   let totalRisks = 0;
 
-  (state.meetings || []).forEach(m => {
+  state.meetings.forEach(m => {
     totalDecisions += (m.decisions || []).length;
     totalTasks += (m.tasks || []).length;
     totalRisks += (m.risks || []).length;
@@ -69,7 +56,7 @@ function renderHeaderMetrics() {
 
 function renderMeetingsList() {
   const listEl = document.getElementById('meeting-selector-list');
-  if (!listEl || !state.meetings) return;
+  if (!listEl || !state || !state.meetings) return;
 
   let html = '';
   state.meetings.forEach((m, idx) => {
@@ -223,7 +210,7 @@ function renderKnowledgeGraphTab() {
   ];
 
   window.GraphVisualizer.renderKnowledgeGraph('knowledge-graph-container', { nodes, edges }, (node) => {
-    alert(`Entity: ${node.label} (${node.type})\nConnected into organizational memory.`);
+    alert(`Entity Inspector: ${node.label} (${node.type})\nConnected into organizational memory.`);
   });
 }
 
@@ -302,21 +289,23 @@ async function handleWhyQuery(customQuestion) {
     answerContainer.innerHTML = `<div style="padding: 24px; text-align: center; color: var(--accent-cyan);">🧠 Tracing organizational knowledge graph across meetings...</div>`;
   }
 
-  try {
-    const res = await fetch('/api/query/why', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question })
-    });
+  if (window.location.protocol.startsWith('http')) {
+    try {
+      const res = await fetch('/api/query/why', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
 
-    if (res.ok) {
-      const data = await res.json();
-      renderAnswer(data);
-      return;
-    }
-  } catch (err) {}
+      if (res.ok) {
+        const data = await res.json();
+        renderAnswer(data);
+        return;
+      }
+    } catch (err) {}
+  }
 
-  // Fallback client-side resolver
+  // Client-Side In-Browser RAG Query Resolver
   resolveQueryInBrowser(question);
 }
 
@@ -434,30 +423,6 @@ function renderAnswer(data) {
       ` : ''}
     </div>
   `;
-}
-
-function startAudioSimulation() {
-  const canvas = document.getElementById('audio-waveform-canvas');
-  if (!canvas) return;
-  canvas.style.display = 'block';
-
-  if (!visualizerInstance) {
-    visualizerInstance = new window.AudioWaveformVisualizer('audio-waveform-canvas');
-  }
-
-  visualizerInstance.startSimulation((phrase) => {
-    const liveBox = document.getElementById('live-transcript-box');
-    if (liveBox) {
-      liveBox.innerHTML += `<div class="transcript-line" style="color: #38BDF8; font-weight: 600;">⚡ [Live Stream] ${phrase}</div>`;
-      liveBox.scrollTop = liveBox.scrollHeight;
-    }
-  });
-}
-
-function stopAudioSimulation() {
-  if (visualizerInstance) {
-    visualizerInstance.stopSimulation();
-  }
 }
 
 function switchTab(tabId) {
